@@ -1,5 +1,5 @@
 <script setup></script>
 
 <template>
-    <h1>Hello World!</h1>
+    <h1>PokeCentral</h1>
 </template>
