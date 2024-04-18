@@ -26,10 +26,32 @@
             <p>ID: {{ pokemon_selecionado.id }}</p>
 
             <!-- Aqui vou implementar todas as sprites (penso em fazer em forma de carrossel) -->
-
             <div>
+                <h4>Sprites</h4>
+            </div>
+
+            <div class="tabela">
                 <h4>Movimentos de ataque</h4>
-                <!-- Aqui vou implementar os movimentos de ataque -->
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="item in movimentos_filtrados(
+                                pokemon_selecionado
+                            )"
+                            :key="item.move.name"
+                        >
+                            <td>
+                                <span>{{ item.move.name }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div>
@@ -81,6 +103,23 @@ export default {
                     this.mostra_modal = !this.mostra_modal;
                 });
         },
+        movimentos_filtrados(pokemon) {
+            return pokemon.moves.filter((item) => {
+                let incluiNaTabela = false;
+
+                for (let versao of item.version_group_details) {
+                    if (
+                        versao.version_group.name == "sword-shield" ||
+                        versao.move_learn_method.name == "machine" ||
+                        versao.move_learn_method.name == "egg" ||
+                        versao.move_learn_method.name == "tutor"
+                    ) {
+                        incluiNaTabela = true;
+                    }
+                }
+                return incluiNaTabela;
+            });
+        },
     },
 
     computed: {
@@ -116,5 +155,16 @@ export default {
 }
 .esconde {
     display: none;
+}
+
+.tabela {
+    max-height: 50vh;
+    overflow-y: scroll;
+
+    > h4 {
+        position: sticky;
+        top: 0;
+        background-color: #d9d9d9;
+    }
 }
 </style>
