@@ -1,4 +1,3 @@
-<!-- PokemonModal.vue -->
 <template>
     <section v-if="pokemon" class="modal">
         <div class="modal-conteudo">
@@ -89,7 +88,7 @@ export default {
     left: 0;
 
     background-color: rgba(0, 0, 0, 0.6);
-    color: white;
+    color: black;
 
     width: 100%;
     height: 100vh;
