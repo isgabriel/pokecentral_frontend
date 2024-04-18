@@ -4,19 +4,8 @@
     <h1>PokeCentral</h1>
 
     <ul>
-        <li
-            v-for="pokemon in pokemons"
-            :key="pokemon.name"
-            @click="mostra_pokemon(pegar_id(pokemon))"
-        >
-            <h2>{{ pokemon.name }}</h2>
-
-            <img
-                :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pegar_id(
-                    pokemon
-                )}.png`"
-                :alt="pokemon.name"
-            />
+        <li v-for="pokemon in pokemons" :key="pokemon.name">
+            <PokemonCard :pokemon="pokemon" @clicked="mostrar_pokemon" />
         </li>
     </ul>
 
@@ -69,11 +58,12 @@
 
 <script>
 import axios from "axios";
+import PokemonCard from "./PokemonCard.vue";
 
 export default {
     name: "Pokemons",
 
-    components: {},
+    components: { PokemonCard },
 
     data() {
         return {
@@ -92,9 +82,6 @@ export default {
     },
 
     methods: {
-        pegar_id(pokemon) {
-            return Number(pokemon.url.split("/")[6]);
-        },
         mostra_pokemon(id) {
             axios
                 .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -103,6 +90,8 @@ export default {
                     this.mostra_modal = !this.mostra_modal;
                 });
         },
+
+        //refatorar para componente modal
         movimentos_filtrados(pokemon) {
             return pokemon.moves.filter((item) => {
                 let incluiNaTabela = false;
