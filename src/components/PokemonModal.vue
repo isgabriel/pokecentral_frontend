@@ -13,13 +13,13 @@
             <div class="tabela">
                 <h4>Movimentos de ataque</h4>
 
-                <table>
+                <!-- <table>
                     <thead>
                         <tr>
                             <th>Nome</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="lista-movimentos">
                         <tr
                             v-for="item in movimentosDeAtaquePokemon(pokemon)"
                             :key="item.move.name"
@@ -29,7 +29,15 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
+                <ul class="lista-movimentos">
+                    <li
+                        v-for="item in movimentosDeAtaquePokemon(pokemon)"
+                        :key="item.move.name"
+                    >
+                        <span>{{ item.move.name }}</span>
+                    </li>
+                </ul>
             </div>
 
             <div>
@@ -39,7 +47,11 @@
 
             <div>
                 <h4>Games que este pokemon está presente</h4>
-                <!-- Aqui vou implementar os games que o pokemon está presente -->
+                <ul class="lista-games">
+                    <li v-for="game in gamesDoPokemon" :key="game">
+                        {{ game }}
+                    </li>
+                </ul>
             </div>
         </div>
     </section>
@@ -61,14 +73,7 @@ export default {
                 let incluiNaTabela = false;
 
                 for (let versao of item.version_group_details) {
-                    if (
-                        versao.version_group.name == "sword-shield" ||
-                        versao.move_learn_method.name == "machine" ||
-                        versao.move_learn_method.name == "egg" ||
-                        versao.move_learn_method.name == "tutor"
-                    ) {
-                        incluiNaTabela = true;
-                    }
+                    incluiNaTabela = true;
                 }
                 return incluiNaTabela;
             });
@@ -76,7 +81,13 @@ export default {
     },
 
     computed: {
-        // Aqui eu vou implementar os filtros depois de desenvolver a lógica do card
+        gamesDoPokemon() {
+            if (!this.pokemon) return [];
+
+            return this.pokemon.game_indices.map((game) => {
+                return game.version.name.replace(/-/g, " ");
+            });
+        },
     },
 };
 </script>
@@ -101,26 +112,24 @@ export default {
 
 .modal-conteudo {
     background-color: #d9d9d9;
-    height: 60vh;
+
     width: 90%;
     max-width: 800px;
-
-    .tabela {
-        background-color: #b6b6b6;
-        max-height: 200px;
-        overflow-y: scroll;
-
-        > h4 {
-            margin: 0;
-            background-color: inherit;
-            position: sticky;
-            top: 0;
-        }
-    }
 }
 
-.close {
-    cursor: pointer;
-    font-size: 35px;
+.lista-movimentos,
+.lista-games {
+    max-height: 200px;
+
+    padding: 0;
+
+    overflow-y: auto;
+}
+
+.lista-movimentos li,
+.lista-games li {
+    padding: 8px;
+
+    border-bottom: 1px solid #b6b6b6;
 }
 </style>
