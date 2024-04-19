@@ -15,10 +15,11 @@
         <div>
             <label for="inputId">FILTRAR POR ID</label>
             <input
-                type="number"
+                type="text"
                 v-model.number="filtroID"
                 placeholder="Filtrar por ID"
                 id="inputId"
+                @input="filtrarNumerosDoInput"
             />
         </div>
 
@@ -76,7 +77,7 @@ export default {
             mostrarModal: false,
             pokemonSelecionado: null,
             filtroNome: "",
-            filtroID: null,
+            filtroID: "",
             filtroTipo: "",
             tiposUnicos: [],
             filtroEspecie: "",
@@ -100,9 +101,9 @@ export default {
                 });
             }
 
-            if (this.filtroID !== null) {
+            if (this.filtroID) {
                 listaFiltrada = listaFiltrada.filter((pokemon) => {
-                    return pokemon.id === parseInt(this.filtroID);
+                    return pokemon.id.toString().includes(this.filtroID);
                 });
             }
 
@@ -178,6 +179,12 @@ export default {
 
         fechaModal() {
             this.mostrarModal = false;
+        },
+
+        filtrarNumerosDoInput(event) {
+            const input = event.target;
+            input.value = input.value.replace(/\D/g, "");
+            this.filtroID = input.value;
         },
     },
 };
