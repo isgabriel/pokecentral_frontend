@@ -32,6 +32,20 @@
             </select>
         </div>
 
+        <div>
+            <label for="inputEspecie">FILTRAR POR ESPÉCIE</label>
+            <select v-model="filtroEspecie" id="inputEspecie">
+                <option value="">Todas</option>
+                <option
+                    v-for="especie in especiesUnicas"
+                    :key="especie"
+                    :value="especie"
+                >
+                    {{ especie }}
+                </option>
+            </select>
+        </div>
+
         <ul>
             <li v-for="pokemon in pokemonsFiltrados" :key="pokemon.name">
                 <PokemonCard :pokemon="pokemon" @clicked="mostraModalPokemon" />
@@ -65,6 +79,8 @@ export default {
             filtroID: null,
             filtroTipo: "",
             tiposUnicos: [],
+            filtroEspecie: "",
+            especiesUnicas: [],
         };
     },
 
@@ -96,6 +112,12 @@ export default {
                 });
             }
 
+            if (this.filtroEspecie) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.species === this.filtroEspecie;
+                });
+            }
+
             return listaFiltrada;
         },
     },
@@ -115,14 +137,26 @@ export default {
 
                 this.pokemons = pokemonData.map((data, index) => ({
                     name: data.name,
-                    image: data.sprites.other["official-artwork"].front_default, //imagens mais bonitas
+                    image: data.sprites.other["official-artwork"].front_default,
                     types: data.types.map((type) => type.type.name),
+                    species: data.species.name,
                     id: data.id,
                 }));
-                await this.atualizaTiposUnicos();
+                await this.atualizaEspeciesUnicas();
             } catch (error) {
                 console.error("Erro ao carregar os pokémons:", error);
             }
+        },
+
+        async atualizaEspeciesUnicas() {
+            const tipos = new Set();
+            const especies = new Set();
+            this.pokemons.forEach((pokemon) => {
+                pokemon.types.forEach((type) => tipos.add(type));
+                especies.add(pokemon.species);
+            });
+            this.tiposUnicos = Array.from(tipos);
+            this.especiesUnicas = Array.from(especies);
         },
 
         atualizaTiposUnicos() {
