@@ -4,20 +4,32 @@
 
         <!-- Filtros -->
         <div>
-            <label for="">FILTRAR POR NOME</label>
+            <label for="inputNome">FILTRAR POR NOME</label>
             <input
                 type="text"
                 v-model="filtroNome"
                 placeholder="Filtrar por nome"
+                id="inputNome"
             />
         </div>
         <div>
-            <label for="">FILTRAR POR ID</label>
+            <label for="inputId">FILTRAR POR ID</label>
             <input
                 type="number"
                 v-model.number="filtroID"
                 placeholder="Filtrar por ID"
+                id="inputId"
             />
+        </div>
+
+        <div>
+            <label for="inputTipo">FILTRAR POR TIPO</label>
+            <select v-model="filtroTipo" id="inputTipo">
+                <option value="">Todos</option>
+                <option v-for="tipo in tiposUnicos" :key="tipo" :value="tipo">
+                    {{ tipo }}
+                </option>
+            </select>
         </div>
 
         <ul>
@@ -51,18 +63,13 @@ export default {
             pokemonSelecionado: null,
             filtroNome: "",
             filtroID: null,
+            filtroTipo: "",
+            tiposUnicos: [],
         };
     },
 
     mounted() {
-        axios
-            .get("https://pokeapi.co/api/v2/pokemon?limit=151")
-            .then((response) => {
-                this.pokemons = response.data.results.map((pokemon, index) => ({
-                    ...pokemon,
-                    id: index + 1, //+1 porque os ids da API iniciam em 1
-                }));
-            });
+        this.fetchPokemons();
     },
 
     computed: {
@@ -83,8 +90,10 @@ export default {
                 });
             }
 
-            if (!this.filtroNome && this.filtroID === null) {
-                return this.pokemons;
+            if (this.filtroTipo) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.types.includes(this.filtroTipo);
+                });
             }
 
             return listaFiltrada;
@@ -92,6 +101,38 @@ export default {
     },
 
     methods: {
+        async fetchPokemons() {
+            try {
+                const response = await axios.get(
+                    "https://pokeapi.co/api/v2/pokemon?limit=151"
+                );
+                const promises = response.data.results.map((result) => {
+                    const url = result.url;
+                    return axios.get(url).then((res) => res.data);
+                });
+
+                const pokemonData = await Promise.all(promises);
+
+                this.pokemons = pokemonData.map((data, index) => ({
+                    name: data.name,
+                    image: data.sprites.other["official-artwork"].front_default, //imagens mais bonitas
+                    types: data.types.map((type) => type.type.name),
+                    id: data.id,
+                }));
+                await this.atualizaTiposUnicos();
+            } catch (error) {
+                console.error("Erro ao carregar os pokémons:", error);
+            }
+        },
+
+        atualizaTiposUnicos() {
+            const tipos = new Set();
+            this.pokemons.forEach((pokemon) => {
+                pokemon.types.forEach((type) => tipos.add(type));
+            });
+            this.tiposUnicos = Array.from(tipos);
+        },
+
         mostraModalPokemon(id) {
             axios
                 .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
