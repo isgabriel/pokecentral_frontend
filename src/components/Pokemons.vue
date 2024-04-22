@@ -210,7 +210,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .containerPrincipal {
     display: flex;
     flex-direction: column;

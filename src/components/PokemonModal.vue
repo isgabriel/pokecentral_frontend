@@ -1,9 +1,12 @@
 <template>
     <section v-if="pokemon" class="modal">
         <div class="modal-conteudo">
-            <span class="close" @click="fechaModal">X</span>
-            <h2>{{ pokemon.name }}</h2>
-            <p>ID: {{ pokemon.id }}</p>
+            <div class="headerModal">
+                <h2>Informações do {{ pokemon.name }}</h2>
+                <span class="close" @click="fechaModal">X</span>
+            </div>
+
+            <!-- <p>ID: {{ pokemon.id }}</p> -->
 
             <PokemonSprites :sprites="pokemon.sprites" />
 
@@ -84,15 +87,37 @@ export default {
 }
 
 .modal-conteudo {
-    background-color: #d9d9d9;
+    background-color: #d2a700;
 
     width: 90%;
     max-width: 800px;
-    max-height: 60vh;
+    min-height: 60vh;
+    max-height: 90vh;
     overflow-y: scroll;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.headerModal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+
+    > span {
+        font-size: 28px;
+        font-weight: 700;
+    }
 }
 
-.lista-movimentos,
+/* .lista-movimentos,
 .lista-games {
     max-height: 200px;
 
@@ -106,5 +131,5 @@ export default {
     padding: 8px;
 
     border-bottom: 1px solid #b6b6b6;
-}
+} */
 </style>
