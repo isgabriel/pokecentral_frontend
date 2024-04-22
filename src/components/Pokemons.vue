@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h1>PokeCentral</h1>
+    <main class="containerPrincipal">
+        <a href="#" class="logo">
+            <img src="/logo.svg" alt="" />
+        </a>
 
         <!-- Filtros -->
         <div>
@@ -47,8 +49,12 @@
             </select>
         </div>
 
-        <ul>
-            <li v-for="pokemon in pokemonsFiltrados" :key="pokemon.name">
+        <ul class="listaPokemons" role="list">
+            <li
+                v-for="pokemon in pokemonsFiltrados"
+                :key="pokemon.name"
+                className="listaItem"
+            >
                 <PokemonCard :pokemon="pokemon" @clicked="mostraModalPokemon" />
             </li>
         </ul>
@@ -58,7 +64,7 @@
             :pokemon="pokemonSelecionado"
             @close="fechaModal"
         />
-    </div>
+    </main>
 </template>
 
 <script>
@@ -192,4 +198,33 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.logo {
+    margin: 40px 0;
+}
+.containerPrincipal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+ul {
+    list-style-type: none;
+}
+.listaPokemons {
+    padding: 0;
+    width: 90%;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 32px;
+}
+.listaItem {
+    background-color: #d2a700;
+}
+</style>
