@@ -309,7 +309,7 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     row-gap: 32px;
     column-gap: 15px;
