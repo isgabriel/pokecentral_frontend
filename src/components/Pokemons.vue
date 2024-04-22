@@ -309,12 +309,19 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     row-gap: 32px;
     column-gap: 15px;
 }
 .listaItem {
     background-color: #d2a700;
+
+    &:hover {
+        transform: scale(1.05);
+        transition: 0.5s;
+
+        border: 1px solid #3d3101;
+    }
 }
 </style>

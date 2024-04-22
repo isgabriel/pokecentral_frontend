@@ -94,14 +94,17 @@ export default {
 </script>
 
 <style scoped>
-.evolucaoContainer > h4 {
-    text-align: center;
-    font-size: 18px;
+.evolucaoContainer {
+    padding: 15px 0;
+    > h4 {
+        text-align: center;
+        font-size: 18px;
 
-    margin-bottom: 20px;
+        margin-bottom: 10px;
 
-    @media (min-width: 769px) {
-        font-size: 24px;
+        @media (min-width: 769px) {
+            font-size: 24px;
+        }
     }
 }
 .divEvolucao {
@@ -128,10 +131,10 @@ export default {
         flex-direction: row;
         justify-content: center;
         .pokemonNome {
-            font-size: 24px;
+            font-size: 20px;
         }
         .nivelEvolucao {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
         }
     }

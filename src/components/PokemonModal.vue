@@ -89,16 +89,19 @@ export default {
 .modal-conteudo {
     background-color: #d2a700;
 
+    position: relative;
+
     width: 90%;
     max-width: 800px;
     min-height: 60vh;
     max-height: 90vh;
     overflow-y: scroll;
 
-    padding: 18px;
+    padding: 0 18px 18px 18px;
 
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 30px;
 }
 .headerModal {
@@ -107,6 +110,16 @@ export default {
     justify-content: space-between;
     align-items: center;
 
+    position: sticky;
+    top: 0;
+
+    width: 100%;
+
+    background-color: #d2a700;
+
+    padding: 18px;
+    margin: 0 auto;
+
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 500;
@@ -114,22 +127,7 @@ export default {
     > span {
         font-size: 28px;
         font-weight: 700;
+        cursor: pointer;
     }
 }
-
-/* .lista-movimentos,
-.lista-games {
-    max-height: 200px;
-
-    padding: 0;
-
-    overflow-y: auto;
-}
-
-.lista-movimentos li,
-.lista-games li {
-    padding: 8px;
-
-    border-bottom: 1px solid #b6b6b6;
-} */
 </style>

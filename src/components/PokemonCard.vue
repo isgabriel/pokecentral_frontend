@@ -33,6 +33,8 @@ export default {
     flex-direction: column;
     align-items: center;
 
+    cursor: pointer;
+
     width: 128px;
     height: 223px;
     padding: 28px 12px;
