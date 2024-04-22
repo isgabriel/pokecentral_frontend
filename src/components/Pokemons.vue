@@ -77,7 +77,7 @@ export default {
             mostrarModal: false,
             pokemonSelecionado: null,
             filtroNome: "",
-            filtroID: "",
+            filtroID: null,
             filtroTipo: "",
             tiposUnicos: [],
             filtroEspecie: "",
@@ -142,6 +142,7 @@ export default {
                     types: data.types.map((type) => type.type.name),
                     species: data.species.name,
                     id: data.id,
+                    sprites: data.sprites,
                 }));
                 await this.atualizaEspeciesUnicas();
             } catch (error) {
@@ -183,8 +184,9 @@ export default {
 
         filtrarNumerosDoInput(event) {
             const input = event.target;
-            input.value = input.value.replace(/\D/g, "");
-            this.filtroID = input.value;
+            const filteredValue = input.value.replace(/\D/g, "");
+            this.filtroID =
+                filteredValue !== "" ? parseInt(filteredValue) : null;
         },
     },
 };

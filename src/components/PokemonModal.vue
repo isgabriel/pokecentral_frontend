@@ -5,31 +5,10 @@
             <h2>{{ pokemon.name }}</h2>
             <p>ID: {{ pokemon.id }}</p>
 
-            <!-- Aqui vou implementar todas as sprites (penso em fazer em forma de carrossel) -->
-            <div>
-                <h4>Sprites</h4>
-            </div>
+            <PokemonSprites :sprites="pokemon.sprites" />
 
             <div class="tabela">
                 <h4>Movimentos de ataque</h4>
-
-                <!-- <table>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                        </tr>
-                    </thead>
-                    <tbody class="lista-movimentos">
-                        <tr
-                            v-for="item in movimentosDeAtaquePokemon(pokemon)"
-                            :key="item.move.name"
-                        >
-                            <td>
-                                <span>{{ item.move.name }}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> -->
                 <ul class="lista-movimentos">
                     <li
                         v-for="item in movimentosDeAtaquePokemon(pokemon)"
@@ -58,9 +37,14 @@
 </template>
 
 <script>
+import PokemonSprites from "./PokemonSprites.vue";
 export default {
     props: {
         pokemon: Object,
+    },
+
+    components: {
+        PokemonSprites,
     },
 
     methods: {
@@ -115,6 +99,8 @@ export default {
 
     width: 90%;
     max-width: 800px;
+    max-height: 60vh;
+    overflow-y: scroll;
 }
 
 .lista-movimentos,
