@@ -1,6 +1,6 @@
 <template>
     <div class="sprites">
-        <h4>Sprites</h4>
+        <h4>Sprites do {{ pokemon.name }}</h4>
         <ul class="sprites-container">
             <li v-for="(sprite, key) in sprites" :key="key">
                 <img
@@ -17,16 +17,24 @@
 export default {
     props: {
         sprites: Object,
+        pokemon: Object,
     },
 };
 </script>
 
 <style scoped>
+.sprites > h4 {
+    text-align: center;
+    font-size: 18px;
+
+    margin-bottom: 20px;
+
+    @media (min-width: 769px) {
+        font-size: 24px;
+    }
+}
+
 .sprites-container {
-    padding: 0;
-
-    list-style: none;
-
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -35,8 +43,7 @@ export default {
 }
 
 .sprites-container li img {
-    margin: 5px;
-    max-width: 100px;
-    max-height: 100px;
+    width: 100px;
+    height: 100px;
 }
 </style>
