@@ -15,6 +15,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Estilos específicos do componente, se necessário */
-</style>
+<style scoped></style>
