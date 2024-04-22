@@ -11,10 +11,7 @@
 
             <PokemonGames :games="gamesDoPokemon" />
 
-            <div>
-                <h4>Evoluções</h4>
-                <PokemonEvolution :pokemon="pokemon" />
-            </div>
+            <PokemonEvolution :pokemon="pokemon" />
         </div>
     </section>
 </template>
