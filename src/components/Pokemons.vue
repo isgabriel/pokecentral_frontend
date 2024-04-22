@@ -1,120 +1,195 @@
-<script setup></script>
-
 <template>
-    <h1>PokeCentral</h1>
+    <div>
+        <h1>PokeCentral</h1>
 
-    <ul>
-        <li
-            v-for="pokemon in pokemons"
-            :key="pokemon.name"
-            @click="mostra_pokemon(pegar_id(pokemon))"
-        >
-            <h2>{{ pokemon.name }}</h2>
-
-            <img
-                :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pegar_id(
-                    pokemon
-                )}.png`"
-                :alt="pokemon.name"
-            />
-        </li>
-    </ul>
-
-    <section v-if="mostra_modal" :class="mostra_modal ? 'mostra' : 'esconde'">
+        <!-- Filtros -->
         <div>
-            <h2>{{ pokemon_selecionado.name }}</h2>
-            <p>ID: {{ pokemon_selecionado.id }}</p>
-
-            <!-- Aqui vou implementar todas as sprites (penso em fazer em forma de carrossel) -->
-
-            <div>
-                <h4>Movimentos de ataque</h4>
-                <!-- Aqui vou implementar os movimentos de ataque -->
-            </div>
-
-            <div>
-                <h4>Evoluções</h4>
-                <!-- Aqui vou implementar todas as evoluções do pokemon, caso ele tenha -->
-            </div>
-
-            <div>
-                <h4>Games que este pokemon está presente</h4>
-                <!-- Aqui vou implementar os games que o pokemon está presente -->
-            </div>
+            <label for="inputNome">FILTRAR POR NOME</label>
+            <input
+                type="text"
+                v-model="filtroNome"
+                placeholder="Filtrar por nome"
+                id="inputNome"
+            />
         </div>
-    </section>
+        <div>
+            <label for="inputId">FILTRAR POR ID</label>
+            <input
+                type="text"
+                v-model.number="filtroID"
+                placeholder="Filtrar por ID"
+                id="inputId"
+                @input="filtrarNumerosDoInput"
+            />
+        </div>
+
+        <div>
+            <label for="inputTipo">FILTRAR POR TIPO</label>
+            <select v-model="filtroTipo" id="inputTipo">
+                <option value="">Todos</option>
+                <option v-for="tipo in tiposUnicos" :key="tipo" :value="tipo">
+                    {{ tipo }}
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label for="inputEspecie">FILTRAR POR ESPÉCIE</label>
+            <select v-model="filtroEspecie" id="inputEspecie">
+                <option value="">Todas</option>
+                <option
+                    v-for="especie in especiesUnicas"
+                    :key="especie"
+                    :value="especie"
+                >
+                    {{ especie }}
+                </option>
+            </select>
+        </div>
+
+        <ul>
+            <li v-for="pokemon in pokemonsFiltrados" :key="pokemon.name">
+                <PokemonCard :pokemon="pokemon" @clicked="mostraModalPokemon" />
+            </li>
+        </ul>
+
+        <PokemonModal
+            v-if="mostrarModal"
+            :pokemon="pokemonSelecionado"
+            @close="fechaModal"
+        />
+    </div>
 </template>
 
 <script>
 import axios from "axios";
+import PokemonCard from "./PokemonCard.vue";
+import PokemonModal from "./PokemonModal.vue";
 
 export default {
     name: "Pokemons",
 
-    components: {},
+    components: { PokemonCard, PokemonModal },
 
     data() {
         return {
             pokemons: [],
-            mostra_modal: false,
-            pokemon_selecionado: null,
+            mostrarModal: false,
+            pokemonSelecionado: null,
+            filtroNome: "",
+            filtroID: null,
+            filtroTipo: "",
+            tiposUnicos: [],
+            filtroEspecie: "",
+            especiesUnicas: [],
         };
     },
 
     mounted() {
-        axios
-            .get("https://pokeapi.co/api/v2/pokemon?limit=150")
-            .then((response) => {
-                this.pokemons = response.data.results;
-            });
-    },
-
-    methods: {
-        pegar_id(pokemon) {
-            return Number(pokemon.url.split("/")[6]);
-        },
-        mostra_pokemon(id) {
-            axios
-                .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-                .then((response) => {
-                    this.pokemon_selecionado = response.data;
-                    this.mostra_modal = !this.mostra_modal;
-                });
-        },
+        this.fetchPokemons();
     },
 
     computed: {
-        // Aqui eu vou implementar os filtros depois de desenvolver a lógica do card
+        pokemonsFiltrados() {
+            let listaFiltrada = this.pokemons;
+
+            if (this.filtroNome) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.name
+                        .toLowerCase()
+                        .includes(this.filtroNome.toLowerCase());
+                });
+            }
+
+            if (this.filtroID) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.id.toString().includes(this.filtroID);
+                });
+            }
+
+            if (this.filtroTipo) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.types.includes(this.filtroTipo);
+                });
+            }
+
+            if (this.filtroEspecie) {
+                listaFiltrada = listaFiltrada.filter((pokemon) => {
+                    return pokemon.species === this.filtroEspecie;
+                });
+            }
+
+            return listaFiltrada;
+        },
+    },
+
+    methods: {
+        async fetchPokemons() {
+            try {
+                const response = await axios.get(
+                    "https://pokeapi.co/api/v2/pokemon?limit=151"
+                );
+                const promises = response.data.results.map((result) => {
+                    const url = result.url;
+                    return axios.get(url).then((res) => res.data);
+                });
+
+                const pokemonData = await Promise.all(promises);
+
+                this.pokemons = pokemonData.map((data, index) => ({
+                    name: data.name,
+                    image: data.sprites.other["official-artwork"].front_default,
+                    types: data.types.map((type) => type.type.name),
+                    species: data.species.name,
+                    id: data.id,
+                    sprites: data.sprites,
+                }));
+                await this.atualizaEspeciesUnicas();
+            } catch (error) {
+                console.error("Erro ao carregar os pokémons:", error);
+            }
+        },
+
+        async atualizaEspeciesUnicas() {
+            const tipos = new Set();
+            const especies = new Set();
+            this.pokemons.forEach((pokemon) => {
+                pokemon.types.forEach((type) => tipos.add(type));
+                especies.add(pokemon.species);
+            });
+            this.tiposUnicos = Array.from(tipos);
+            this.especiesUnicas = Array.from(especies);
+        },
+
+        atualizaTiposUnicos() {
+            const tipos = new Set();
+            this.pokemons.forEach((pokemon) => {
+                pokemon.types.forEach((type) => tipos.add(type));
+            });
+            this.tiposUnicos = Array.from(tipos);
+        },
+
+        mostraModalPokemon(id) {
+            axios
+                .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                .then((response) => {
+                    this.pokemonSelecionado = response.data;
+                    this.mostrarModal = true;
+                });
+        },
+
+        fechaModal() {
+            this.mostrarModal = false;
+        },
+
+        filtrarNumerosDoInput(event) {
+            const input = event.target;
+            const filteredValue = input.value.replace(/\D/g, "");
+            this.filtroID =
+                filteredValue !== "" ? parseInt(filteredValue) : null;
+        },
     },
 };
 </script>
-<style scoped>
-.mostra {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
 
-    background-color: rgba(0, 0, 0, 0.8);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    > div {
-        background-color: #d9d9d9;
-
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    width: 100%;
-    height: 100%;
-}
-.esconde {
-    display: none;
-}
-</style>
+<style scoped></style>
