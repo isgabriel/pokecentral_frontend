@@ -19,14 +19,7 @@
                 </ul>
             </div>
 
-            <div>
-                <h4>Games que este pokemon está presente</h4>
-                <ul class="lista-games">
-                    <li v-for="game in gamesDoPokemon" :key="game">
-                        {{ game }}
-                    </li>
-                </ul>
-            </div>
+            <PokemonGames :games="gamesDoPokemon" />
 
             <div>
                 <h4>Evoluções</h4>
@@ -39,6 +32,7 @@
 <script>
 import PokemonSprites from "./PokemonSprites.vue";
 import PokemonEvolution from "./PokemonEvolution.vue";
+import PokemonGames from "./PokemonGames.vue"; // Importando o novo componente
 
 export default {
     props: {
@@ -48,6 +42,7 @@ export default {
     components: {
         PokemonSprites,
         PokemonEvolution,
+        PokemonGames, // Registrando o novo componente
     },
 
     methods: {
@@ -79,7 +74,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .modal {
     position: fixed;
     top: 0;
