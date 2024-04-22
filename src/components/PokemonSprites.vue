@@ -22,6 +22,14 @@ export default {
 </script>
 
 <style scoped>
+.sprites > h4 {
+    text-align: center;
+    font-size: 18px;
+    @media (min-width: 769px) {
+        font-size: 24px;
+    }
+}
+
 .sprites-container {
     display: flex;
     flex-direction: row;
