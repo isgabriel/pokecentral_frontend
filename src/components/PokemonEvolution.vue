@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h4>Evoluções</h4>
         <ul>
             <li v-for="(evolution_detail, index) in evolucoesPokemon()">
                 <div
@@ -49,7 +50,6 @@ export default {
                         .get(response.data.evolution_chain.url)
                         .then((response) => {
                             this.evolution = response.data.chain;
-                            console.log(response.data.chain);
                         });
                 });
         },

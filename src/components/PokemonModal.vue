@@ -7,31 +7,11 @@
 
             <PokemonSprites :sprites="pokemon.sprites" />
 
-            <div class="tabela">
-                <h4>Movimentos de ataque</h4>
-                <ul class="lista-movimentos">
-                    <li
-                        v-for="item in movimentosDeAtaquePokemon(pokemon)"
-                        :key="item.move.name"
-                    >
-                        <span>{{ item.move.name }}</span>
-                    </li>
-                </ul>
-            </div>
+            <PokemonMoves :moves="movesDeAtaquePokemon" />
 
-            <div>
-                <h4>Games que este pokemon está presente</h4>
-                <ul class="lista-games">
-                    <li v-for="game in gamesDoPokemon" :key="game">
-                        {{ game }}
-                    </li>
-                </ul>
-            </div>
+            <PokemonGames :games="gamesDoPokemon" />
 
-            <div>
-                <h4>Evoluções</h4>
-                <PokemonEvolution :pokemon="pokemon" />
-            </div>
+            <PokemonEvolution :pokemon="pokemon" />
         </div>
     </section>
 </template>
@@ -39,6 +19,8 @@
 <script>
 import PokemonSprites from "./PokemonSprites.vue";
 import PokemonEvolution from "./PokemonEvolution.vue";
+import PokemonGames from "./PokemonGames.vue";
+import PokemonMoves from "./PokemonMoves.vue";
 
 export default {
     props: {
@@ -48,15 +30,21 @@ export default {
     components: {
         PokemonSprites,
         PokemonEvolution,
+        PokemonGames,
+        PokemonMoves,
     },
 
     methods: {
         fechaModal() {
             this.$emit("close");
         },
+    },
 
-        movimentosDeAtaquePokemon(pokemon) {
-            return pokemon.moves.filter((item) => {
+    computed: {
+        movesDeAtaquePokemon() {
+            if (!this.pokemon) return [];
+
+            return this.pokemon.moves.filter((item) => {
                 let incluiNaTabela = false;
 
                 for (let versao of item.version_group_details) {
@@ -65,9 +53,7 @@ export default {
                 return incluiNaTabela;
             });
         },
-    },
 
-    computed: {
         gamesDoPokemon() {
             if (!this.pokemon) return [];
 
