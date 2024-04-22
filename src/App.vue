@@ -20,4 +20,8 @@ import Pokemons from "./components/Pokemons.vue";
 
     background-color: #122657;
 }
+
+ul {
+    list-style-type: none;
+}
 </style>

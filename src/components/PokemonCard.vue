@@ -2,7 +2,7 @@
     <div @click="mostrarPokemon(pokemon.id)" :flat="flat" className="container">
         <img v-if="pokemon.image" :src="pokemon.image" :alt="pokemon.name" />
         <h2>{{ pegarNomePokemon(pokemon) }}</h2>
-        <div className="typesContainer">
+        <div class="typesContainer">
             <span v-for="type in pokemon.types">
                 {{ type }}
             </span>

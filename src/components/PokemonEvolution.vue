@@ -13,7 +13,7 @@
                             evolution_detail.url.split('/')[6]
                         }.png`"
                         :alt="pokemon.name"
-                        className="imgPokemon"
+                        class="imgPokemon"
                     />
                 </div>
                 <div :key="`evolucao${index}`" v-else>
