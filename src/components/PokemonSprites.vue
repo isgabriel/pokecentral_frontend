@@ -1,7 +1,7 @@
 <template>
     <div class="sprites">
         <h4>Sprites</h4>
-        <ul class="sprites-container" :key="key">
+        <ul class="sprites-container">
             <li v-for="(sprite, key) in sprites" :key="key">
                 <img
                     :src="sprite"

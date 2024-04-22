@@ -20,11 +20,6 @@
             </div>
 
             <div>
-                <h4>Evoluções</h4>
-                <!-- Aqui vou implementar todas as evoluções do pokemon, caso ele tenha -->
-            </div>
-
-            <div>
                 <h4>Games que este pokemon está presente</h4>
                 <ul class="lista-games">
                     <li v-for="game in gamesDoPokemon" :key="game">
@@ -32,12 +27,19 @@
                     </li>
                 </ul>
             </div>
+
+            <div>
+                <h4>Evoluções</h4>
+                <PokemonEvolution :pokemon="pokemon" />
+            </div>
         </div>
     </section>
 </template>
 
 <script>
 import PokemonSprites from "./PokemonSprites.vue";
+import PokemonEvolution from "./PokemonEvolution.vue";
+
 export default {
     props: {
         pokemon: Object,
@@ -45,6 +47,7 @@ export default {
 
     components: {
         PokemonSprites,
+        PokemonEvolution,
     },
 
     methods: {
