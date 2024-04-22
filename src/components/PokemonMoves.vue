@@ -1,6 +1,6 @@
 <template>
     <div class="movimentosDeAtaque">
-        <h4>Movimentos de ataque</h4>
+        <h4>Movimentos de ataque do {{ pokemon.name }}</h4>
         <ul class="listaMovimentos">
             <li v-for="item in moves" :key="item.move.name">
                 <span>{{ item.move.name }}</span>
@@ -13,6 +13,7 @@
 export default {
     props: {
         moves: Array,
+        pokemon: Object,
     },
 };
 </script>

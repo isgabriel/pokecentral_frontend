@@ -1,6 +1,6 @@
 <template>
     <div class="sprites">
-        <h4>Sprites do Pokemon</h4>
+        <h4>Sprites do {{ pokemon.name }}</h4>
         <ul class="sprites-container">
             <li v-for="(sprite, key) in sprites" :key="key">
                 <img
@@ -17,6 +17,7 @@
 export default {
     props: {
         sprites: Object,
+        pokemon: Object,
     },
 };
 </script>

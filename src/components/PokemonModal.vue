@@ -8,13 +8,13 @@
 
             <!-- <p>ID: {{ pokemon.id }}</p> -->
 
-            <PokemonSprites :sprites="pokemon.sprites" />
+            <PokemonSprites :sprites="pokemon.sprites" :pokemon="pokemon" />
 
-            <PokemonMoves :moves="movesDeAtaquePokemon" />
-
-            <PokemonGames :games="gamesDoPokemon" />
+            <PokemonMoves :moves="movesDeAtaquePokemon" :pokemon="pokemon" />
 
             <PokemonEvolution :pokemon="pokemon" />
+
+            <PokemonGames :games="gamesDoPokemon" :pokemon="pokemon" />
         </div>
     </section>
 </template>

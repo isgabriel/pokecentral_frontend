@@ -1,6 +1,6 @@
 <template>
     <div class="jogosPresente">
-        <h4>Games que este pokemon está presente</h4>
+        <h4>Games que {{ pokemon.name }} está presente</h4>
         <ul class="listaGames">
             <li v-for="game in games" :key="game">{{ game }}</li>
         </ul>
@@ -11,6 +11,7 @@
 export default {
     props: {
         games: Array,
+        pokemon: Object,
     },
 };
 </script>

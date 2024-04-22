@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4>Evoluções</h4>
+        <h4>Linha de Evolução do {{ pokemon.name }}</h4>
         <ul>
             <li v-for="(evolution_detail, index) in evolucoesPokemon()">
                 <div
