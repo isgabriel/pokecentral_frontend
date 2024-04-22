@@ -22,6 +22,9 @@ export default {
 .movimentosDeAtaque > h4 {
     text-align: center;
     font-size: 18px;
+
+    margin-bottom: 20px;
+
     @media (min-width: 769px) {
         font-size: 24px;
     }

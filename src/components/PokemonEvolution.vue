@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <div class="evolucaoContainer">
         <h4>Linha de Evolução do {{ pokemon.name }}</h4>
-        <ul>
-            <li v-for="(evolution_detail, index) in evolucoesPokemon()">
+
+        <section class="divEvolucao">
+            <div v-for="(evolution_detail, index) in evolucoesPokemon()">
                 <div
                     :key="`evolucao-${index}`"
                     v-if="typeof evolution_detail == 'object'"
                 >
-                    <h1>{{ evolution_detail.name }}</h1>
                     <img
                         :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
                             evolution_detail.url.split('/')[6]
@@ -15,12 +15,13 @@
                         :alt="pokemon.name"
                         class="imgPokemon"
                     />
+                    <h1 class="pokemonNome">{{ evolution_detail.name }}</h1>
                 </div>
-                <div :key="`evolucao${index}`" v-else>
-                    <h3>L {{ evolution_detail }}</h3>
-                </div>
-            </li>
-        </ul>
+                <section :key="`evolucao${index}`" v-else>
+                    <p class="nivelEvolucao">lvl {{ evolution_detail }}</p>
+                </section>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -93,8 +94,51 @@ export default {
 </script>
 
 <style scoped>
+.evolucaoContainer > h4 {
+    text-align: center;
+    font-size: 18px;
+
+    margin-bottom: 20px;
+
+    @media (min-width: 769px) {
+        font-size: 24px;
+    }
+}
+.divEvolucao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 20px;
+
+    > div > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pokemonNome {
+        font-size: 18px;
+    }
+    .nivelEvolucao {
+        font-size: 14px;
+        font-weight: 700;
+    }
+    @media (min-width: 769px) {
+        flex-direction: row;
+        justify-content: center;
+        .pokemonNome {
+            font-size: 24px;
+        }
+        .nivelEvolucao {
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+}
+
 .imgPokemon {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
 }
 </style>
